@@ -1,39 +1,22 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BeforeInsert,
-} from "typeorm";
-import { v4 as uuid } from "uuid";
+import { Post } from "./Posts";
+import { Entity, Column, OneToMany } from "typeorm";
+import Model from "./Model";
+import { IsEmail, Length } from "class-validator";
+
 @Entity("users")
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: "uuid" })
-  uuid: string;
-
+export class User extends Model {
   @Column()
+  @Length(1, 255)
   name: string;
 
   @Column()
+  @IsEmail()
+  @Length(1, 255)
   email: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: "enum", enum: ["user", "admin"] })
+  role: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @BeforeInsert()
-  createUuid() {
-    this.uuid = uuid();
-  }
-
-  toJSON() {
-    return { ...this, id: undefined };
-  }
+  @OneToMany(() => Post, post => post.user)
+  posts: Post[];
 }

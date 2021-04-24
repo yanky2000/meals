@@ -4,9 +4,9 @@
    "port": 5432,
    "username": "postgres",
    "password": "11111",
-   "database": "mealsdb",
+   "database": "feedme",
    "synchronize": true,
-   "logging": false,
+   "logging": true,
    "entities": [
       "src/entity/**/*.ts"
    ],
